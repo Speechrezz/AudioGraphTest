@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="Ka8Bsk" name="AudioGraphTest" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+  <MAINGROUP id="nZOmPe" name="AudioGraphTest">
+    <GROUP id="{1D1FACD3-D0B9-43EE-3808-E9C7D908FF93}" name="Source">
+      <GROUP id="{6BD977B7-4528-9564-AAB7-EA397C00180D}" name="Common">
+        <FILE id="no8Gl2" name="Constants.h" compile="0" resource="0" file="Source/Common/Constants.h"/>
+      </GROUP>
+      <GROUP id="{5C3CD68F-8B99-91F9-E72B-CFFB6D9683F4}" name="GUI">
+        <GROUP id="{3B2505BA-4FFA-3AF8-E31F-78D984B096D9}" name="CustomLooks">
+          <FILE id="iVRXNO" name="CustomLook.cpp" compile="1" resource="0" file="Source/GUI/CustomLooks/CustomLook.cpp"/>
+          <FILE id="uEURWh" name="CustomLook.h" compile="0" resource="0" file="Source/GUI/CustomLooks/CustomLook.h"/>
+        </GROUP>
+        <GROUP id="{08354C41-B9F1-1786-015B-F4F0A638DCB8}" name="Rack">
+          <FILE id="sP4Hj5" name="RackLayout.cpp" compile="1" resource="0" file="Source/GUI/Rack/RackLayout.cpp"/>
+          <FILE id="UDrWHC" name="RackLayout.h" compile="0" resource="0" file="Source/GUI/Rack/RackLayout.h"/>
+        </GROUP>
+        <GROUP id="{08E57852-8E82-A6A1-8896-6981473A4CB8}" name="Utils">
+          <FILE id="tI8SwW" name="DraggableLayout.cpp" compile="1" resource="0"
+                file="Source/GUI/Utils/DraggableLayout.cpp"/>
+          <FILE id="TS9fuG" name="DraggableLayout.h" compile="0" resource="0"
+                file="Source/GUI/Utils/DraggableLayout.h"/>
+          <FILE id="EWd3KK" name="FullSlider.cpp" compile="1" resource="0" file="Source/GUI/Utils/FullSlider.cpp"/>
+          <FILE id="LITBcP" name="FullSlider.h" compile="0" resource="0" file="Source/GUI/Utils/FullSlider.h"/>
+          <FILE id="FvWrPi" name="GuiData.h" compile="0" resource="0" file="Source/GUI/Utils/GuiData.h"/>
+          <FILE id="BXMEWr" name="MovableComponent.cpp" compile="1" resource="0"
+                file="Source/GUI/Utils/MovableComponent.cpp"/>
+          <FILE id="hc9EAL" name="MovableComponent.h" compile="0" resource="0"
+                file="Source/GUI/Utils/MovableComponent.h"/>
+        </GROUP>
+        <FILE id="gEGJFa" name="WindowLayout.cpp" compile="1" resource="0"
+              file="Source/GUI/WindowLayout.cpp"/>
+        <FILE id="Ke2iJp" name="WindowLayout.h" compile="0" resource="0" file="Source/GUI/WindowLayout.h"/>
+      </GROUP>
+      <GROUP id="{5134E660-F27D-C3D0-4A8F-095EAEE759F5}" name="DSP">
+        <GROUP id="{5050EA24-066E-EABB-7B33-D798177472AD}" name="Utils">
+          <FILE id="Sx65um" name="ProcessorBase.h" compile="0" resource="0" file="Source/DSP/Utils/ProcessorBase.h"/>
+        </GROUP>
+        <FILE id="lWNJjN" name="GainProcessor.cpp" compile="1" resource="0"
+              file="Source/DSP/GainProcessor.cpp"/>
+        <FILE id="xZyV4j" name="GainProcessor.h" compile="0" resource="0" file="Source/DSP/GainProcessor.h"/>
+      </GROUP>
+      <FILE id="CvZ2Wc" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="aAyIuk" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="OJjoK4" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="AFN8eb" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="AudioGraphTest"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="AudioGraphTest"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../modules"/>
+        <MODULEPATH id="juce_core" path="../../modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../modules"/>
+        <MODULEPATH id="juce_dsp" path="../../modules"/>
+        <MODULEPATH id="juce_events" path="../../modules"/>
+        <MODULEPATH id="juce_graphics" path="../../modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
