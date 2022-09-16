@@ -17,10 +17,6 @@
           <FILE id="UDrWHC" name="RackLayout.h" compile="0" resource="0" file="Source/GUI/Rack/RackLayout.h"/>
         </GROUP>
         <GROUP id="{08E57852-8E82-A6A1-8896-6981473A4CB8}" name="Utils">
-          <FILE id="tI8SwW" name="DraggableLayout.cpp" compile="1" resource="0"
-                file="Source/GUI/Utils/DraggableLayout.cpp"/>
-          <FILE id="TS9fuG" name="DraggableLayout.h" compile="0" resource="0"
-                file="Source/GUI/Utils/DraggableLayout.h"/>
           <FILE id="EWd3KK" name="FullSlider.cpp" compile="1" resource="0" file="Source/GUI/Utils/FullSlider.cpp"/>
           <FILE id="LITBcP" name="FullSlider.h" compile="0" resource="0" file="Source/GUI/Utils/FullSlider.h"/>
           <FILE id="FvWrPi" name="GuiData.h" compile="0" resource="0" file="Source/GUI/Utils/GuiData.h"/>

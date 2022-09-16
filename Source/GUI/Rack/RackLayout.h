@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "../Utils/MovableComponent.h"
+#include "../Utils/GuiData.h"
 
 class RackLayout  : public juce::Component
 { 
@@ -30,6 +31,9 @@ public:
     void stopMoving();
 
 private:
+    // Draws the divider when user is moving components
+    void drawDivider(juce::Graphics&);
+
     template <typename t> void move(std::vector<t>& v, size_t oldIndex, size_t newIndex)
     {
         if (oldIndex > newIndex)
@@ -41,11 +45,13 @@ private:
     xynth::GuiData& guiData;
 
     std::vector<std::unique_ptr<MovableComponent>> comps;
+    std::vector<int> midPoints;
+    int closestMidPointIdx = -1;
+    const int gap = 10;
+    const int gapHalf = gap / 2;
 
     // Holds the currently moving component
     MovableComponent* curMoving  { nullptr };
-    MovableComponent* newPosition{ nullptr };
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RackLayout)
 };

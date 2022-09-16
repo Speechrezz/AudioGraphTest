@@ -13,7 +13,7 @@
 
 RackLayout::RackLayout(xynth::GuiData& g) : guiData(g)
 {
-    comps.reserve(3);
+    comps.reserve(4);
     comps.emplace_back(std::make_unique<MovableComponent>(100));
     comps.emplace_back(std::make_unique<MovableComponent>(120));
     comps.emplace_back(std::make_unique<MovableComponent>(80));
@@ -36,27 +36,25 @@ void RackLayout::paint (juce::Graphics& g)
 {
     auto rect = getLocalBounds().toFloat().reduced(0.5f);
 
+    g.setColour(juce::Colours::black.withAlpha(0.2f));
+    g.fillRoundedRectangle(rect, 4.f);
+
     g.setColour(juce::Colours::black);
     g.drawRoundedRectangle(rect, 4.f, 1.f);
 
-    if (curMoving != nullptr && curMoving != newPosition && 
-        !(newPosition == nullptr && curMoving->getIdx() == comps.size() - 1))
-    {
-        const int endIdx = comps.size() - 1;
-        g.setColour(juce::Colours::white);
-
-        auto& rect = newPosition == nullptr 
-            ? comps[endIdx]->getBounds()
-            : newPosition->getBounds();
-
-        const int curIdx = curMoving->getIdx();
-        const int newIdx = newPosition == nullptr ? endIdx : newPosition->getIdx();
-
-        int x = newIdx <= curIdx ? rect.getX() - 5 : rect.getRight() + 5;
-
-        g.drawVerticalLine(x, 0, getHeight());
-    }
+    drawDivider(g);
 }
+
+void RackLayout::drawDivider(juce::Graphics& g)
+{
+    if (closestMidPointIdx == -1) return;
+    int curIdx = curMoving->getIdx();
+    if (curIdx == closestMidPointIdx || curIdx + 1 == closestMidPointIdx) return;
+    
+    g.setColour(juce::Colours::white);
+    g.drawVerticalLine(midPoints[closestMidPointIdx], 5, getHeight() - 5);
+}
+
 
 void RackLayout::resized()
 {
@@ -65,61 +63,72 @@ void RackLayout::resized()
 
 void RackLayout::updatePositions()
 {
-    auto rect = getLocalBounds();
+    if (comps.size() == 0) return;
+
+    auto rect = getLocalBounds().reduced(0, 5);
+    midPoints.resize(comps.size() + 1);
+    midPoints[0] = gapHalf;
 
     for (int i = 0; i < comps.size(); ++i)
     {
         auto& comp = comps[i];
 
-        rect.removeFromLeft(10);
+        rect.removeFromLeft(gap);
         comp->setBounds(rect.removeFromLeft(comp->getDesiredWidth()));
         comp->setIdx(i);
+
+        midPoints[i + 1] = comp->getBounds().getRight() + gapHalf;
     }
+    repaint();
 }
 
 void RackLayout::mouseDrag(const juce::MouseEvent& e)
 {
     if (curMoving == nullptr) return;
-    
 
     int curIdx = curMoving->getIdx();
+    int shortest = 9999999;
+    int shortestIdx = -1;
 
-    for (int i = 0; i < comps.size(); ++i)
+    for (int i = 0; i < midPoints.size(); ++i)
     {
-        auto& comp = comps[i];
-
-        if (comp->getScreenBounds().getCentreX() > e.getScreenX())
+        int x = midPoints[i];
+        int dist = std::abs(x - getMouseXYRelative().x);
+        if (dist < shortest)
         {
-            int j = i <= curIdx ? i : i - 1;
-            newPosition = comps[j].get();
-            repaint();
-            return;
+            shortest = dist;
+            shortestIdx = i;
         }
     }
 
-    newPosition = nullptr;
+    jassert(shortestIdx != -1); // should not happen
+    closestMidPointIdx = shortestIdx;
+
     repaint();
 }
 
 void RackLayout::startMoving(MovableComponent* _curMoving)
 {
     curMoving = _curMoving;
-    //DBG(curMoving->getName());
 }
 
 void RackLayout::stopMoving()
 {
-    if (curMoving == nullptr || curMoving == newPosition || comps.size() <= 1)
+    if (curMoving == nullptr || closestMidPointIdx == -1 || comps.size() <= 1)
     {
         return;
         curMoving = nullptr;
     }
 
-    const int newIdx = newPosition == nullptr ? comps.size() - 1 : newPosition->getIdx();
+    const int curIdx = curMoving->getIdx();
+    const int newIdx = closestMidPointIdx > curIdx ? closestMidPointIdx - 1 : closestMidPointIdx;
 
+    // Swap elements
     move(comps, curMoving->getIdx(), newIdx);
-    updatePositions();
 
+    // Reset system
     curMoving = nullptr;
-    repaint();
+    closestMidPointIdx = -1;
+    updatePositions();
 }
+

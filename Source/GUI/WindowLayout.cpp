@@ -30,5 +30,5 @@ void WindowLayout::resized()
     auto rect = getLocalBounds();
     rect.reduce(20, 20);
 
-    rack.setBounds(rect.removeFromTop(120));
+    rack.setBounds(rect.removeFromTop(140));
 }

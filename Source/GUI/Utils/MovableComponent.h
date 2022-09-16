@@ -11,7 +11,6 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../Utils/DraggableLayout.h"
 
 class MovableComponent  : public juce::Component
 {
@@ -33,6 +32,9 @@ public:
 
 private:
     int idx = 0, width;
+    const int headerHeight = 20;
+
+    bool isMoving = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MovableComponent)
 };

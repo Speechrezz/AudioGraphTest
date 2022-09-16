@@ -25,7 +25,11 @@ void MovableComponent::paint (juce::Graphics& g)
 {
     auto rect = getLocalBounds().toFloat();
 
-    g.setColour(juce::Colours::black);
+    juce::Path clip;
+    clip.addRoundedRectangle(rect, 4.f);
+    g.reduceClipRegion(clip);
+
+    g.setColour(juce::Colours::black.brighter(0.1f));
     g.fillRoundedRectangle(rect, 4.f);
 
     g.setColour (juce::Colours::white);
@@ -33,12 +37,15 @@ void MovableComponent::paint (juce::Graphics& g)
     g.drawText (getName(), getLocalBounds(),
                 juce::Justification::centred, true);   // draw some placeholder text
 
+    auto bodyRect = rect;
 
-    if (isMouseButtonDown())
-    {
-        g.setColour(juce::Colours::grey);
-        g.drawRoundedRectangle(rect.reduced(0.5f), 4.f, 1.f);
-    }
+    g.setColour(juce::Colours::black.brighter(0.2f));
+    g.fillRect(bodyRect.removeFromTop(headerHeight));
+
+
+    auto outlineColour = isMouseButtonDown() ? juce::Colours::darkgrey : juce::Colours::black;
+    g.setColour(outlineColour);
+    g.drawRoundedRectangle(rect.reduced(0.5f), 4.f, 1.f);
 }
 
 void MovableComponent::resized()
@@ -48,23 +55,28 @@ void MovableComponent::resized()
 
 void MovableComponent::mouseDown(const juce::MouseEvent& e)
 {
+    repaint();
+
+    if (e.y > headerHeight) return;
+
+    isMoving = true;
     auto parent = dynamic_cast<RackLayout*>(getParentComponent());
     parent->startMoving(this);
-
-    repaint();
 }
 
 void MovableComponent::mouseDrag(const juce::MouseEvent& e)
 {
+    if (!isMoving) return;
     auto parent = dynamic_cast<RackLayout*>(getParentComponent());
-
     parent->mouseDrag(e);
 }
 
 void MovableComponent::mouseUp(const juce::MouseEvent& e)
 {
-    auto parent = dynamic_cast<RackLayout*>(getParentComponent());
-
-    parent->stopMoving();
     repaint();
+
+    if (!isMoving) return;
+    auto parent = dynamic_cast<RackLayout*>(getParentComponent());
+    parent->stopMoving();
+    isMoving = false;
 }
