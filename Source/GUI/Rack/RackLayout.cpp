@@ -22,13 +22,13 @@ RackLayout::RackLayout(xynth::GuiData& g) : guiData(g)
 
     comps[0]->setName("0 - Distortion");
     comps[1]->setName("1 - Reverb");
-    comps[2]->setName("2 - OTT");
-    comps[3]->setName("3 - IDK lmao");
+    comps[2]->setName("2 - Filter");
+    comps[3]->setName("3 - Gain");
 
     comps[0]->setId(CompIds::dist);
     comps[1]->setId(CompIds::reverb);
-    comps[2]->setId(CompIds::ott);
-    comps[3]->setId(CompIds::idk);
+    comps[2]->setId(CompIds::filter);
+    comps[3]->setId(CompIds::gain);
 
     for (auto& comp : comps)
         addAndMakeVisible(*comp);

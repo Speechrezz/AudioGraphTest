@@ -137,13 +137,7 @@ void AudioGraphTestAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         buffer.clear (i, 0, buffer.getNumSamples());
 
     if (updateBuffer.isUnread())
-    {
-        DBG("IS UNREAD");
-        auto& comps = updateBuffer.readState();
-
-        for (auto& comp : comps)
-            DBG(comp);
-    }
+        mainProcessor.updateGraph(updateBuffer.readState());
 
     mainProcessor.processBlock(buffer, midiMessages);
 }

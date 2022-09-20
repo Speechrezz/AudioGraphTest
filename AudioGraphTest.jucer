@@ -34,9 +34,23 @@
       </GROUP>
       <GROUP id="{5134E660-F27D-C3D0-4A8F-095EAEE759F5}" name="DSP">
         <GROUP id="{2D7F9B2B-035B-0902-7D19-AB2B2201ADAA}" name="Processors">
+          <FILE id="TPVWM4" name="DistortionProcessor.cpp" compile="1" resource="0"
+                file="Source/DSP/Processors/DistortionProcessor.cpp"/>
+          <FILE id="qn5aAL" name="DistortionProcessor.h" compile="0" resource="0"
+                file="Source/DSP/Processors/DistortionProcessor.h"/>
+          <FILE id="ef6Xte" name="FilterProcessor.cpp" compile="1" resource="0"
+                file="Source/DSP/Processors/FilterProcessor.cpp"/>
+          <FILE id="EgJD8d" name="FilterProcessor.h" compile="0" resource="0"
+                file="Source/DSP/Processors/FilterProcessor.h"/>
           <FILE id="T8vmnt" name="GainProcessor.cpp" compile="1" resource="0"
                 file="Source/DSP/Processors/GainProcessor.cpp"/>
           <FILE id="VLSaYz" name="GainProcessor.h" compile="0" resource="0" file="Source/DSP/Processors/GainProcessor.h"/>
+          <FILE id="KMT7ya" name="ProcessorHeader.h" compile="0" resource="0"
+                file="Source/DSP/Processors/ProcessorHeader.h"/>
+          <FILE id="emJRso" name="ReverbProcessor.cpp" compile="1" resource="0"
+                file="Source/DSP/Processors/ReverbProcessor.cpp"/>
+          <FILE id="wP0Cpe" name="ReverbProcessor.h" compile="0" resource="0"
+                file="Source/DSP/Processors/ReverbProcessor.h"/>
         </GROUP>
         <GROUP id="{5050EA24-066E-EABB-7B33-D798177472AD}" name="Utils">
           <FILE id="WDfkio" name="MainProcessor.cpp" compile="1" resource="0"

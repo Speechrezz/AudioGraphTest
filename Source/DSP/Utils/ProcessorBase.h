@@ -30,6 +30,8 @@ public:
     #endif
     {}
 
+    ~ProcessorBase() { DBG(getName() + " - Destroyed"); }
+
     //==============================================================================
     void prepareToPlay(double, int) override {}
     void releaseResources() override {}

@@ -28,6 +28,6 @@ namespace CompIds
 {
 	enum CompIds
 	{
-		empty, dist, reverb, ott, idk
+		empty, dist, reverb, filter, gain
 	};
 }

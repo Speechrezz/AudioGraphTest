@@ -16,8 +16,11 @@ MainProcessor::MainProcessor() : mainProcessor(new juce::AudioProcessorGraph())
 {
 }
 
-void MainProcessor::prepare(double sampleRate, int samplesPerBlock, int inChannels, int outChannels)
+void MainProcessor::prepare(double _sampleRate, int _samplesPerBlock, int inChannels, int outChannels)
 {
+    sampleRate = _sampleRate;
+    samplesPerBlock = _samplesPerBlock;
+
     mainProcessor->setPlayConfigDetails(inChannels, outChannels, sampleRate, samplesPerBlock);
     mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
 
@@ -45,8 +48,7 @@ void MainProcessor::initialiseGraph()
     midiInputNode   = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiInputNode));
     midiOutputNode  = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiOutputNode));
 
-    //connectAudioNodes();
-    updateGraph();
+    connectAudioNodes();
     connectMidiNodes();
 }
 
@@ -63,17 +65,34 @@ void MainProcessor::connectMidiNodes()
                                    { midiOutputNode->nodeID, juce::AudioProcessorGraph::midiChannelIndex } });
 }
 
-void MainProcessor::updateGraph()
+void MainProcessor::updateGraph(std::vector<int>& compIds)
 {
-    slot1Node = mainProcessor->addNode(std::make_unique<xynth::GainProcessor>());
+    for (auto connection : mainProcessor->getConnections())
+        mainProcessor->removeConnection(connection);
 
+    const int size = compIds.size();
 
+    for (int i = 0; i < compIds.size(); ++i)
+    {
+        nodes[i] = mainProcessor->addNode(selectSwitch(compIds[i]));
+        nodes[i]->getProcessor()->prepareToPlay(sampleRate, samplesPerBlock);
+    }
+
+    // Connect nodes
+    for (int i = 0; i < compIds.size() - 1; ++i)
+        for (int channel = 0; channel < 2; ++channel)
+            mainProcessor->addConnection({ {nodes[i]->nodeID,     channel},
+                                           {nodes[i + 1]->nodeID, channel} });
+
+    // Connect input and output nodes to system
     for (int channel = 0; channel < 2; ++channel)
     {
         mainProcessor->addConnection({ {audioInputNode->nodeID,  channel},
-                                       {slot1Node->nodeID,       channel} });
-        mainProcessor->addConnection({ {slot1Node->nodeID,       channel},
+                                       {nodes[0]->nodeID,        channel} });
+        mainProcessor->addConnection({ {nodes[size - 1]->nodeID, channel},
                                        {audioOutputNode->nodeID, channel} });
     }
+
+    connectMidiNodes();
 }
 } // namespace xynth

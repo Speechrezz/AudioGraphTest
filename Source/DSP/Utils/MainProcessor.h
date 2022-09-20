@@ -11,8 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "ProcessorBase.h"
-#include "../Processors/GainProcessor.h"
+#include "../Processors/ProcessorHeader.h"
 
 namespace xynth
 {
@@ -24,6 +23,7 @@ public:
 
     void prepare(double sampleRate, int samplesPerBlock, int inChannels, int outChannels);
     void releaseResources();
+    void updateGraph(std::vector<int>& compIds);
 
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
 
@@ -34,7 +34,25 @@ private:
     void initialiseGraph();
     void connectAudioNodes();
     void connectMidiNodes();
-    void updateGraph();
+
+    DistortionProcessor distortionProcessor;
+    ReverbProcessor reverbProcessor;
+    FilterProcessor filterProcessor;
+    GainProcessor gainProcessor;
+
+    std::unique_ptr<ProcessorBase> selectSwitch(int i) {
+        switch (i) {
+        case 0: return std::make_unique<ProcessorBase>();
+        case 1: return std::make_unique<DistortionProcessor>();
+        case 2: return std::make_unique<ReverbProcessor>();
+        case 3: return std::make_unique<FilterProcessor>();
+        case 4: return std::make_unique<GainProcessor>();
+        default: jassertfalse; return 0;
+        }
+    }
+
+    std::array<ProcessorBase*, 5> processors{ nullptr, &distortionProcessor, 
+        &reverbProcessor, &filterProcessor, &gainProcessor };
 
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
 
@@ -43,7 +61,10 @@ private:
     Node::Ptr midiInputNode;
     Node::Ptr midiOutputNode;
 
-    Node::Ptr slot1Node;
+    std::array<Node::Ptr, 4> nodes;
+
+    double sampleRate; 
+    int samplesPerBlock;
 
 };
 } // namespace xynth
