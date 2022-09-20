@@ -28,7 +28,9 @@ public:
         #endif
             )
     #endif
-    {}
+    {
+        DBG("Object created");
+    }
 
     ~ProcessorBase() { DBG(getName() + " - Destroyed"); }
 
@@ -42,7 +44,7 @@ public:
     bool hasEditor() const override { return false; }
 
     //==============================================================================
-    const juce::String getName() const override { return {}; }
+    const juce::String getName() const override { return "ProcessorBase"; }
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
     double getTailLengthSeconds() const override { return 0; }

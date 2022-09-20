@@ -33,6 +33,7 @@ RackLayout::RackLayout(xynth::GuiData& g) : guiData(g)
     for (auto& comp : comps)
         addAndMakeVisible(*comp);
 
+    guiData.audioProcessor.updateBuffer.pushState(comps);
 }
 
 RackLayout::~RackLayout()
@@ -121,16 +122,14 @@ void RackLayout::startMoving(MovableComponent* _curMoving)
 
 void RackLayout::stopMoving()
 {
-    if (curMoving == nullptr || closestMidPointIdx == -1 || comps.size() <= 1)
+    const int curIdx = curMoving->getIdx();
+    const int newIdx = closestMidPointIdx > curIdx ? closestMidPointIdx - 1 : closestMidPointIdx;
+
+    if (curMoving == nullptr || closestMidPointIdx == -1 || comps.size() <= 1 || curIdx == newIdx)
     {
         return;
         curMoving = nullptr;
     }
-
-    const int curIdx = curMoving->getIdx();
-    const int newIdx = closestMidPointIdx > curIdx ? closestMidPointIdx - 1 : closestMidPointIdx;
-
-    if (curIdx == newIdx) return;
 
     // Swap elements
     move(comps, curMoving->getIdx(), newIdx);

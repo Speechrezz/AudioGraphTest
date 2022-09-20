@@ -61,8 +61,6 @@ private:
     Node::Ptr midiInputNode;
     Node::Ptr midiOutputNode;
 
-    std::array<Node::Ptr, 4> nodes;
-
     double sampleRate; 
     int samplesPerBlock;
 

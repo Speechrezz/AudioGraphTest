@@ -48,8 +48,8 @@ void MainProcessor::initialiseGraph()
     midiInputNode   = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiInputNode));
     midiOutputNode  = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiOutputNode));
 
-    connectAudioNodes();
-    connectMidiNodes();
+    //connectAudioNodes();
+    //connectMidiNodes();
 }
 
 void MainProcessor::connectAudioNodes()
@@ -67,10 +67,15 @@ void MainProcessor::connectMidiNodes()
 
 void MainProcessor::updateGraph(std::vector<int>& compIds)
 {
-    for (auto connection : mainProcessor->getConnections())
+    /*for (auto connection : mainProcessor->getConnections())
         mainProcessor->removeConnection(connection);
 
-    const int size = compIds.size();
+    for (auto node : mainProcessor->getNodes())
+        mainProcessor->removeNode(node);*/
+    initialiseGraph();
+
+    const auto size = compIds.size();
+    std::array<Node::Ptr, 4> nodes;
 
     for (int i = 0; i < compIds.size(); ++i)
     {
@@ -94,5 +99,7 @@ void MainProcessor::updateGraph(std::vector<int>& compIds)
     }
 
     connectMidiNodes();
+
+    DBG("num nodes: " << mainProcessor->getNumNodes());
 }
 } // namespace xynth
