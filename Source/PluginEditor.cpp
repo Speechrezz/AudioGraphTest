@@ -50,7 +50,6 @@ AudioGraphTestAudioProcessorEditor::AudioGraphTestAudioProcessorEditor (AudioGra
 
     const int skin = properties.getUserSettings()->getIntValue("Skin", 0);
     //guiData.updateLnf(skin);
-    DBG(skin);
 
     addAndMakeVisible(windowLayout);
 }

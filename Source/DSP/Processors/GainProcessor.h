@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Utils/ProcessorBase.h"
+#include "../Utils/ProcessorBase.h"
 
 namespace xynth
 {

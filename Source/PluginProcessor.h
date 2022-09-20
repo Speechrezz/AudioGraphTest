@@ -9,7 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "DSP/GainProcessor.h"
+#include "Common/UpdateBuffer.h"
+#include "DSP/Utils/MainProcessor.h"
 
 class AudioGraphTestAudioProcessor  : public juce::AudioProcessor
 {
@@ -52,24 +53,10 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //juce::AudioProcessorValueTreeState treeState;
+    xynth::UpdateBuffer updateBuffer;
 
 private:
-    using AudioGraphIOProcessor = juce::AudioProcessorGraph::AudioGraphIOProcessor;
-    using Node = juce::AudioProcessorGraph::Node;
-
-    void initialiseGraph();
-    void connectAudioNodes();
-    void connectMidiNodes();
-    void updateGraph();
-
-    std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
-
-    Node::Ptr audioInputNode;
-    Node::Ptr audioOutputNode;
-    Node::Ptr midiInputNode;
-    Node::Ptr midiOutputNode;
-
-    Node::Ptr slot1Node;
+    xynth::MainProcessor mainProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioGraphTestAudioProcessor)
 };

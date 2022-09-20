@@ -28,10 +28,13 @@ public:
     inline int getIdx() { return idx; }
     void setIdx(int _idx) { idx = _idx; }
 
+    inline int getId() { return id; }
+    void setId(int _id) { id = _id; }
+
     inline int getDesiredWidth() const { return width; }
 
 private:
-    int idx = 0, width;
+    int idx = 0, id = 0, width = 100;
     const int headerHeight = 20;
 
     bool isMoving = false;

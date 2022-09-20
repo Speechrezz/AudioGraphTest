@@ -19,8 +19,7 @@ AudioGraphTestAudioProcessor::AudioGraphTestAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ),
-    mainProcessor(new juce::AudioProcessorGraph())
+                       )
 #endif
 {
 }
@@ -94,18 +93,12 @@ void AudioGraphTestAudioProcessor::changeProgramName (int index, const juce::Str
 //==============================================================================
 void AudioGraphTestAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    mainProcessor->setPlayConfigDetails(getMainBusNumInputChannels(),
-        getMainBusNumOutputChannels(),
-        sampleRate, samplesPerBlock);
-
-    mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
-
-    initialiseGraph();
+    mainProcessor.prepare(sampleRate, samplesPerBlock, getMainBusNumInputChannels(), getMainBusNumOutputChannels());
 }
 
 void AudioGraphTestAudioProcessor::releaseResources()
 {
-    mainProcessor->releaseResources();
+    mainProcessor.releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -143,9 +136,16 @@ void AudioGraphTestAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    //updateGraph();
+    if (updateBuffer.isUnread())
+    {
+        DBG("IS UNREAD");
+        auto& comps = updateBuffer.readState();
 
-    mainProcessor->processBlock(buffer, midiMessages);
+        for (auto& comp : comps)
+            DBG(comp);
+    }
+
+    mainProcessor.processBlock(buffer, midiMessages);
 }
 
 //==============================================================================
@@ -171,40 +171,6 @@ void AudioGraphTestAudioProcessor::setStateInformation (const void* data, int si
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
-}
-
-void AudioGraphTestAudioProcessor::initialiseGraph()
-{
-    mainProcessor->clear();
-
-    audioInputNode  = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioInputNode));
-    audioOutputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioOutputNode));
-    midiInputNode   = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiInputNode));
-    midiOutputNode  = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiOutputNode));
-
-    connectAudioNodes();
-    connectMidiNodes();
-}
-
-void AudioGraphTestAudioProcessor::connectAudioNodes()
-{
-    for (int channel = 0; channel < 2; ++channel)
-        mainProcessor->addConnection({ { audioInputNode->nodeID,  channel },
-                                       { audioOutputNode->nodeID, channel } });
-}
-
-void AudioGraphTestAudioProcessor::connectMidiNodes()
-{
-    mainProcessor->addConnection({ { midiInputNode->nodeID,  juce::AudioProcessorGraph::midiChannelIndex },
-                                   { midiOutputNode->nodeID, juce::AudioProcessorGraph::midiChannelIndex } });
-}
-
-void AudioGraphTestAudioProcessor::updateGraph()
-{
-    juce::ReferenceCountedArray<Node> slots;
-
-    slots.add(slot1Node);
-
 }
 
 //==============================================================================

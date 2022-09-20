@@ -23,3 +23,11 @@
 
 #define DIST_SELECT_ID "distSelect"
 #define DIST_SELECT_NAME "Zekete Type"
+
+namespace CompIds
+{
+	enum CompIds
+	{
+		empty, dist, reverb, ott, idk
+	};
+}

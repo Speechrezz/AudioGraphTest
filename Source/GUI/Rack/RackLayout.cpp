@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "RackLayout.h"
+#include "../../Common/UpdateBuffer.h"
 
 RackLayout::RackLayout(xynth::GuiData& g) : guiData(g)
 {
@@ -18,10 +19,16 @@ RackLayout::RackLayout(xynth::GuiData& g) : guiData(g)
     comps.emplace_back(std::make_unique<MovableComponent>(120));
     comps.emplace_back(std::make_unique<MovableComponent>(80));
     comps.emplace_back(std::make_unique<MovableComponent>(150));
+
     comps[0]->setName("0 - Distortion");
     comps[1]->setName("1 - Reverb");
     comps[2]->setName("2 - OTT");
     comps[3]->setName("3 - IDK lmao");
+
+    comps[0]->setId(CompIds::dist);
+    comps[1]->setId(CompIds::reverb);
+    comps[2]->setId(CompIds::ott);
+    comps[3]->setId(CompIds::idk);
 
     for (auto& comp : comps)
         addAndMakeVisible(*comp);
@@ -123,6 +130,8 @@ void RackLayout::stopMoving()
     const int curIdx = curMoving->getIdx();
     const int newIdx = closestMidPointIdx > curIdx ? closestMidPointIdx - 1 : closestMidPointIdx;
 
+    if (curIdx == newIdx) return;
+
     // Swap elements
     move(comps, curMoving->getIdx(), newIdx);
 
@@ -130,5 +139,7 @@ void RackLayout::stopMoving()
     curMoving = nullptr;
     closestMidPointIdx = -1;
     updatePositions();
+
+    guiData.audioProcessor.updateBuffer.pushState(comps);
 }
 
